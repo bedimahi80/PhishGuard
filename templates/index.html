@@ -1,43 +1,75 @@
-<!-- Input Section with Quick Actions -->
-<div class="search-container">
-  <div class="input-group">
-    <input type="text" id="urlInput" placeholder="Enter or paste URL (e.g., https://example.com)..." autofocus autocomplete="off" />
-    <button id="pasteBtn" type="button" class="btn-secondary" title="Paste from clipboard">📋 Paste</button>
-    <button id="scanBtn" type="button" class="btn-primary">Scan URL</button>
-  </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhishGuard | AI Threat Detection</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🛡️ PhishGuard</h1>
+            <p>Advanced AI-Powered Phishing & Typosquatting Detection</p>
+        </header>
 
-  <!-- Quick Test Chips -->
-  <div class="quick-chips">
-    <span class="chips-label">Quick Test:</span>
-    <button type="button" class="chip" data-url="https://www.google.com">Google (Safe)</button>
-    <button type="button" class="chip" data-url="https://g00gle.com">Typosquat</button>
-    <button type="button" class="chip" data-url="http://192.168.1.1/login">Raw IP</button>
-  </div>
-</div>
+        <!-- Input Section with Quick Actions -->
+        <div class="search-container">
+            <div class="input-group">
+                <input type="url" id="urlInput" placeholder="Enter or paste URL (e.g., https://example.com)..." autofocus autocomplete="off" maxlength="2048" />
+                <button id="pasteBtn" type="button" class="btn-secondary" title="Paste from clipboard">📋 Paste</button>
+                <button id="scanBtn" type="button" class="btn-primary">Scan URL</button>
+            </div>
 
-<!-- Compact Metric Bar (To be populated dynamically) -->
-<div id="resultsView" class="hidden">
-  <div class="verdict-banner" id="verdictBanner">
-    <div id="verdictText">Legitimate</div>
-    <button id="copyReportBtn" class="btn-outline">Copy Report</button>
-  </div>
+            <!-- Quick Test Chips -->
+            <div class="quick-chips">
+                <span class="chips-label">Quick Test:</span>
+                <button type="button" class="chip" data-url="https://www.google.com">Google (Safe)</button>
+                <button type="button" class="chip" data-url="https://g00gle.com">Typosquat</button>
+                <button type="button" class="chip" data-url="http://192.168.1.1/login">Raw IP</button>
+            </div>
+        </div>
 
-  <div class="metrics-grid">
-    <div class="metric-card">
-      <span class="metric-title">Risk Score</span>
-      <span class="metric-value" id="riskScoreVal">--%</span>
+        <!-- Loading Indicator -->
+        <div id="loadingIndicator" class="hidden">
+            <div class="spinner"></div>
+            <p>Analyzing URL structure and fetching threat intelligence...</p>
+        </div>
+
+        <!-- Results View -->
+        <div id="resultsView" class="hidden">
+            <div class="verdict-banner" id="verdictBanner">
+                <h2 id="verdictText">Analysis Complete</h2>
+                <button id="copyReportBtn" class="btn-outline">Copy Report</button>
+            </div>
+
+            <!-- Compact Metric Bar -->
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <span class="metric-title">Risk Score</span>
+                    <span class="metric-value" id="riskScoreVal">--%</span>
+                </div>
+                <div class="metric-card">
+                    <span class="metric-title">ML Confidence</span>
+                    <span class="metric-value" id="mlScoreVal">--%</span>
+                </div>
+                <div class="metric-card">
+                    <span class="metric-title">VirusTotal</span>
+                    <span class="metric-value" id="vtVal">--/--</span>
+                </div>
+                <div class="metric-card">
+                    <span class="metric-title">Domain Age</span>
+                    <span class="metric-value" id="ageVal">-- days</span>
+                </div>
+            </div>
+
+            <!-- Detailed Forensics (Raw JSON Output for Deep Dive) -->
+            <div class="forensics-section">
+                <h3>Forensic Details</h3>
+                <pre id="rawOutput"></pre>
+            </div>
+        </div>
     </div>
-    <div class="metric-card">
-      <span class="metric-title">ML Confidence</span>
-      <span class="metric-value" id="mlScoreVal">--%</span>
-    </div>
-    <div class="metric-card">
-      <span class="metric-title">VirusTotal</span>
-      <span class="metric-value" id="vtVal">--/--</span>
-    </div>
-    <div class="metric-card">
-      <span class="metric-title">Domain Age</span>
-      <span class="metric-value" id="ageVal">-- days</span>
-    </div>
-  </div>
-</div>
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
